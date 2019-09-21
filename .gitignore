@@ -1,0 +1,9 @@
+/.metadata/
+RealEstatePortalServer/.mvn/wrapper/maven-wrapper.jar
+RealEstatePortalServer/.mvn/wrapper/maven-wrapper.properties
+RealEstatePortalServer/.mvn/wrapper/maven-wrapper.jar
+*.jar
+.mvn
+RemoteSystemsTempFiles/.project
+Servers/*
+*.prefs

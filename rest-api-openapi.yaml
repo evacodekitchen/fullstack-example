@@ -18,7 +18,7 @@ tags:
 - name: user
   description: register, view, login, logout user
 paths:
-  /property:
+  /properties:
     post:
       tags:
       - property
@@ -34,7 +34,7 @@ paths:
                 $ref: '#/components/schemas/Property'
         405:
           description: Invalid input
-  /property/{id}:
+  /properties/{id}:
     get:
       tags:
       - property
@@ -107,7 +107,7 @@ paths:
           description: Invalid ID supplied
         404:
           description: Property not found
-  /user:
+  /users:
     post:
       tags:
       - user
@@ -128,7 +128,7 @@ paths:
             applicaiton/json:
               schema:
                 $ref: '#/components/schemas/User'
-  /user/login:
+  /users/login:
     post:
       tags:
       - user
@@ -144,7 +144,7 @@ paths:
                 $ref: '#/components/schemas/User'
         400:
           description: Invalid username/password supplied
-  /user/{id}/logout:
+  /users/{id}/logout:
     get:
       tags:
       - user
@@ -162,7 +162,7 @@ paths:
       responses:
         default:
           description: successful operation
-  /user/{id}:
+  /users/{id}:
     get:
       tags:
       - user

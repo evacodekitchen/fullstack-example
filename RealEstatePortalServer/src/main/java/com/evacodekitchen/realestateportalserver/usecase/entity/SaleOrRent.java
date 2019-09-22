@@ -3,7 +3,7 @@ package com.evacodekitchen.realestateportalserver.usecase.entity;
 import java.util.stream.Stream;
 
 public enum SaleOrRent {
-	SALE("sale"), RENT("rent");
+	SALE("SALE"), RENT("RENT");
 
 	private SaleOrRent(String code) {
 		this.code = code;

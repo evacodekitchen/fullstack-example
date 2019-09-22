@@ -1,51 +1,23 @@
-package com.evacodekitchen.realestateportalserver.usecase.entity;
+package com.evacodekitchen.realestateportalserver.rest.dto;
 
-import java.util.Arrays;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import com.evacodekitchen.realestateportalserver.usecase.entity.SaleOrRent;
 
-@Entity
-public class Property {
+public class NewPropertyDTO {
+	public NewPropertyDTO() {
+	}
 
 	private String city;
-
 	private String description;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
-	@Lob
-	private byte[] picture;
-
+	private MultipartFile picture;
 	private Double price;
-
 	private SaleOrRent saleOrRent;
-
 	private String street;
 
-	public Property() {
-		super();
-	}
-
-	public Property(Long id, SaleOrRent saleOrRent, Double price, String description, String city, String street,
-			byte[] picture) {
-		super();
-		this.id = id;
-		this.saleOrRent = saleOrRent;
-		this.price = price;
-		this.description = description;
-		this.city = city;
-		this.street = street;
-		this.picture = picture;
-	}
-
-	public Property(SaleOrRent saleOrRent, Double price, String description, String city, String street,
-			byte[] picture) {
+	public NewPropertyDTO(SaleOrRent saleOrRent, Double price, String description, String city, String street,
+			MultipartFile picture) {
 		super();
 		this.saleOrRent = saleOrRent;
 		this.price = price;
@@ -63,7 +35,7 @@ public class Property {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Property other = (Property) obj;
+		NewPropertyDTO other = (NewPropertyDTO) obj;
 		if (city == null) {
 			if (other.city != null)
 				return false;
@@ -74,12 +46,7 @@ public class Property {
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (!Arrays.equals(picture, other.picture))
+		if (picture.equals(picture))
 			return false;
 		if (price == null) {
 			if (other.price != null)
@@ -104,11 +71,7 @@ public class Property {
 		return description;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public byte[] getPicture() {
+	public MultipartFile getPicture() {
 		return picture;
 	}
 
@@ -130,8 +93,7 @@ public class Property {
 		int result = 1;
 		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + Arrays.hashCode(picture);
+		result = prime * result + picture.hashCode();
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
 		result = prime * result + ((saleOrRent == null) ? 0 : saleOrRent.hashCode());
 		result = prime * result + ((street == null) ? 0 : street.hashCode());
@@ -146,11 +108,7 @@ public class Property {
 		this.description = description;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setPicture(byte[] picture) {
+	public void setPicture(MultipartFile picture) {
 		this.picture = picture;
 	}
 
@@ -164,12 +122,5 @@ public class Property {
 
 	public void setStreet(String street) {
 		this.street = street;
-	}
-
-	@Override
-	public String toString() {
-		return "Property [id=" + id + ", city=" + city + ", description=" + description + ", picture="
-				+ Arrays.toString(picture) + ", price=" + price + ", saleOrRent=" + saleOrRent + ", street=" + street
-				+ "]";
 	}
 }

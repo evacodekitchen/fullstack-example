@@ -39,4 +39,17 @@ public class PropertyRepositoryTest {
 		assertThat(retrievedProperty.get(), is(savedProperty));
 	}
 
+	@Test
+	public void propertyShouldBePersisted() {
+		// given
+		Property propertyToBePersisted = new Property(SaleOrRent.RENT, 456d, "some description", "some city", "some street",
+				new byte[0]);
+		
+		// when
+		Property savedProperty = propertyRepository.save(propertyToBePersisted);
+		
+		// then
+		assertThat(savedProperty, is(propertyToBePersisted));
+	}
+
 }

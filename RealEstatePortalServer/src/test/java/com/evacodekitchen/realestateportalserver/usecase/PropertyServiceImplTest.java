@@ -62,5 +62,19 @@ public class PropertyServiceImplTest {
 		//then
 		assertTrue(propertyFromDbLayer.isEmpty());
 	}
-
+	
+	@Test
+	public void propertyShouldBePassedToDbLayerTBeSaved() {
+		// given
+		Property propertyToBeAdded = new Property(SaleOrRent.SALE, 1d, "some desc", "some city", "some street", new byte[0]);
+		Property mockPropertyWithId = new Property(1L, SaleOrRent.SALE, 1d, "some desc", "some city", "some street", new byte[0]);
+		when(propertyRepository.save(propertyToBeAdded)).thenReturn(mockPropertyWithId);
+		
+		// when
+		Property propertySaved = propertyService.addNewProperty(propertyToBeAdded);
+		
+		//then
+		assertThat(propertySaved, is(mockPropertyWithId));
+	}
+	
 }

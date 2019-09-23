@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.evacodekitchen.realestateportalserver.rest.dto.NewPropertyDTO;
@@ -40,10 +41,13 @@ public class PropertyController {
 		logger.info("Property to be added: " + newProperty);
 		return propertyService.addNewProperty(newProperty);
 	}
-	
+
 	@GetMapping
-	public List<Property> getAllProperties(Pageable pageable){
-		return propertyService.getAllProperties(pageable);
+	public List<Property> getAllProperties(@RequestParam(required = false) String city, Pageable pageable) {
+		if (city == null) {
+			return propertyService.getAllProperties(pageable);
+		}
+		return propertyService.getPropertiesByCity(city, pageable);
 	}
 
 }

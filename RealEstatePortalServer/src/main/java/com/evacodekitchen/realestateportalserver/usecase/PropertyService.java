@@ -13,4 +13,6 @@ public interface PropertyService {
 	public Property addNewProperty(Property newProperty);
 
 	public List<Property> getAllProperties(Pageable pageable);
+
+	public List<Property> getPropertiesByCity(String city, Pageable pageable);
 }

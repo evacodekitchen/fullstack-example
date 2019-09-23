@@ -151,5 +151,31 @@ public class PropertyRestApiIT {
 		assertThat(propertiesInResponse.get(0), is(savedProperty1));
 		assertThat(propertiesInResponse.get(1), is(savedProperty2));
 	}
+	
+	@Test
+	public void whenSearchForPropertiesInGivenCity_thenOnlyPropertiesInThatCityAreRetrieved() throws Exception {
+		// given
+		Property mockProperty1 = new Property(SaleOrRent.RENT, 2d, "some descr1", "some city1", null, null);
+		Property mockProperty2 = new Property(SaleOrRent.RENT, 3d, "some descr2", "some city2", null, null);
+		Property mockProperty3 = new Property(SaleOrRent.RENT, 4d, "some descr3", "some city1", null, null);
+		Property savedProperty1 = propertyRepository.save(mockProperty1);
+		Property savedProperty2 = propertyRepository.save(mockProperty2);
+		Property savedProperty3 = propertyRepository.save(mockProperty3);
+
+		// when
+		MockHttpServletResponse response = mockMvc.perform(get("/api/v1/properties?city=some city1")).andReturn()
+				.getResponse();
+
+		// then
+		assertThat(response.getStatus(), is(HttpStatus.OK.value()));
+		assertThat(response.getContentType(), is(MediaType.APPLICATION_JSON_UTF8.toString()));
+		String contentAsString = response.getContentAsString();
+		List<Property> propertiesInResponse = (List<Property>) objectMapper.readValue(contentAsString,
+				new TypeReference<List<Property>>() {
+				});
+		assertThat(propertiesInResponse.size(), is(2));
+		assertThat(propertiesInResponse.get(0), is(savedProperty1));
+		assertThat(propertiesInResponse.get(1), is(savedProperty3));
+	}
 
 }

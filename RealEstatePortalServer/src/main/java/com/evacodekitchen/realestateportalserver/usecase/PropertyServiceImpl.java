@@ -2,6 +2,7 @@ package com.evacodekitchen.realestateportalserver.usecase;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,13 @@ public class PropertyServiceImpl implements PropertyService {
 	@Override
 	public List<Property> getAllProperties(Pageable pageable) {
 		return propertyRepository.findAll(pageable).getContent();
+	}
+
+	@Override
+	public List<Property> getPropertiesByCity(String city, Pageable pageable) {
+//		return propertyRepository.findAll().stream().filter(property -> property.getCity().equals(city)).skip(pageable.getOffset()).limit(pageable.getPageSize())
+//				.collect(Collectors.toList());
+		return propertyRepository.findByCity(city, pageable);
 	}
 
 }

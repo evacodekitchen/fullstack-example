@@ -19,6 +19,24 @@ tags:
   description: register, view, login, logout user
 paths:
   /properties:
+    get:
+      tags: 
+      - property
+      summary: List properties filtered by city
+      parameters: 
+      - name: city
+        in: query
+        description: city filter
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfProperties'
     post:
       tags:
       - property
@@ -223,6 +241,10 @@ components:
         city: Budapest
         street: Kossuth
         picture: some picture
+    ArrayOfProperties:
+      type: array
+      items: 
+        $ref: '#/components/schemas/Property'
     PropertyRequest:
       type: object
       properties:

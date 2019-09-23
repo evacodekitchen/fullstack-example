@@ -1,10 +1,12 @@
 package com.evacodekitchen.realestateportalserver.usecase;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,14 @@ public class PropertyServiceImpl implements PropertyService {
 //		return propertyRepository.findAll().stream().filter(property -> property.getCity().equals(city)).skip(pageable.getOffset()).limit(pageable.getPageSize())
 //				.collect(Collectors.toList());
 		return propertyRepository.findByCity(city, pageable);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		if (propertyRepository.existsById(id))
+			propertyRepository.deleteById(id);
+		else
+			throw new NoSuchElementException("Property with id " + id + " cannot be deleted, because it does not exists");
 	}
 
 }

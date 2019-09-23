@@ -15,4 +15,6 @@ public interface PropertyService {
 	public List<Property> getAllProperties(Pageable pageable);
 
 	public List<Property> getPropertiesByCity(String city, Pageable pageable);
+
+	public void deleteById(Long id);
 }

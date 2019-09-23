@@ -1,12 +1,17 @@
 package com.evacodekitchen.realestateportalserver.integrationtest;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.io.FileInputStream;
 import java.util.List;
+import java.util.Optional;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -110,8 +115,7 @@ public class PropertyRestApiIT {
 		Property savedProperty3 = propertyRepository.save(mockProperty3);
 
 		// when
-		MockHttpServletResponse response = mockMvc.perform(get("/api/v1/properties")).andReturn()
-				.getResponse();
+		MockHttpServletResponse response = mockMvc.perform(get("/api/v1/properties")).andReturn().getResponse();
 
 		// then
 		assertThat(response.getStatus(), is(HttpStatus.OK.value()));
@@ -125,7 +129,7 @@ public class PropertyRestApiIT {
 		assertThat(propertiesInResponse.get(1), is(savedProperty2));
 		assertThat(propertiesInResponse.get(2), is(savedProperty3));
 	}
-	
+
 	@Test
 	public void whenSearchForAllProperties_thenFirstPageIsRetrieved() throws Exception {
 		// given
@@ -151,7 +155,7 @@ public class PropertyRestApiIT {
 		assertThat(propertiesInResponse.get(0), is(savedProperty1));
 		assertThat(propertiesInResponse.get(1), is(savedProperty2));
 	}
-	
+
 	@Test
 	public void whenSearchForPropertiesInGivenCity_thenOnlyPropertiesInThatCityAreRetrieved() throws Exception {
 		// given
@@ -176,6 +180,34 @@ public class PropertyRestApiIT {
 		assertThat(propertiesInResponse.size(), is(2));
 		assertThat(propertiesInResponse.get(0), is(savedProperty1));
 		assertThat(propertiesInResponse.get(1), is(savedProperty3));
+	}
+
+	@Test
+	public void whenDeleteApiIsCalled_thenPropertyIsDeletedFromRepo() throws Exception {
+		// given
+		Property mockProperty = new Property(SaleOrRent.RENT, 2d, "some descr", "some city", null, null);
+		Property savedProperty = propertyRepository.save(mockProperty);
+
+		// when
+		MockHttpServletResponse response = mockMvc.perform(delete("/api/v1/properties/" + savedProperty.getId()))
+				.andReturn().getResponse();
+
+		// then
+		assertThat(response.getStatus(), is(HttpStatus.OK.value()));
+		assertThat(response.getContentAsString(), Matchers.isEmptyString());
+
+		Optional<Property> notFoundProperty = propertyRepository.findById(savedProperty.getId());
+		assertTrue(notFoundProperty.isEmpty());
+	}
+
+	@Test
+	public void whenDeleteApiIsCalledForUnexistentProperty_thenNotFoundIsReturned() throws Exception {
+		// when
+		MockHttpServletResponse response = mockMvc.perform(delete("/api/v1/properties/1234")).andReturn().getResponse();
+
+		// then
+		assertThat(response.getStatus(), is(HttpStatus.NOT_FOUND.value()));
+		assertThat(response.getContentAsString(), containsString("not exits"));
 	}
 
 }

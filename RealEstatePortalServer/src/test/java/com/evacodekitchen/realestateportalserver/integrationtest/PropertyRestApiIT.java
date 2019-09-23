@@ -207,7 +207,7 @@ public class PropertyRestApiIT {
 
 		// then
 		assertThat(response.getStatus(), is(HttpStatus.NOT_FOUND.value()));
-		assertThat(response.getContentAsString(), containsString("not exits"));
+		assertThat(response.getContentAsString(), containsString("not exists"));
 	}
 
 }

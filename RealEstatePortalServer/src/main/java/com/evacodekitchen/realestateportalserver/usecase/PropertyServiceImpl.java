@@ -1,8 +1,10 @@
 package com.evacodekitchen.realestateportalserver.usecase;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.evacodekitchen.realestateportalserver.data.PropertyRepository;
@@ -22,6 +24,11 @@ public class PropertyServiceImpl implements PropertyService {
 	@Override
 	public Property addNewProperty(Property newProperty) {
 		return propertyRepository.save(newProperty);
+	}
+
+	@Override
+	public List<Property> getAllProperties(Pageable pageable) {
+		return propertyRepository.findAll(pageable).getContent();
 	}
 
 }

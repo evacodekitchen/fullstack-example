@@ -7,3 +7,13 @@ RealEstatePortalServer/.mvn/wrapper/maven-wrapper.jar
 RemoteSystemsTempFiles/.project
 Servers/*
 *.prefs
+.idea/vcs.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/fullstack-example.iml
+real-estate-portal-site/.idea/vcs.xml
+real-estate-portal-site/.idea/inspectionProfiles/Project_Default.xml
+real-estate-portal-site/.idea/misc.xml
+real-estate-portal-site/.idea/modules.xml
+real-estate-portal-site/package-lock.json
+real-estate-portal-site/.idea/real-estate-portal-site.iml

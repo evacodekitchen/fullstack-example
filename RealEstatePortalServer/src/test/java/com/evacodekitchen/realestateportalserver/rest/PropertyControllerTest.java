@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.evacodekitchen.realestateportalserver.rest.dto.ErrorDTO;
 import com.evacodekitchen.realestateportalserver.usecase.PropertyService;
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
+import com.evacodekitchen.realestateportalserver.usecase.entity.PropertyType;
 import com.evacodekitchen.realestateportalserver.usecase.entity.SaleOrRent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,7 +43,8 @@ public class PropertyControllerTest {
 	@Test
 	public void whenPropertyIsSearchById_thenItIsRetrieved() throws Exception {
 		// given
-		Property mockProperty = new Property(12345L, SaleOrRent.RENT, 2d, "some descr", "some city", null, null);
+		Property mockProperty = new Property(12345L, PropertyType.HOUSE, SaleOrRent.RENT, 2d, "some descr", "some city",
+				null, null);
 		when(propertyService.findPropertyBy(12345L)).thenReturn(Optional.of(mockProperty));
 
 		// when
@@ -74,36 +76,35 @@ public class PropertyControllerTest {
 	@Test
 	public void whenNewPropertyIsPosted_thenTheSavedPropertyIsRetrieved() throws Exception {
 		// given
-		FileInputStream fis = new FileInputStream("src/test/resources/testpicture.jpg");
+		FileInputStream fis = new FileInputStream("src/test/resources/house1.jpg");
 		byte[] byteOfPicture = fis.readAllBytes();
-		MockMultipartFile picture = new MockMultipartFile("picture", "somePicture.jpg", "text/plain", byteOfPicture);
+		MockMultipartFile picture = new MockMultipartFile("picture", "house1.jpg", "text/plain", byteOfPicture);
 		fis.close();
 
 		String description = "some descr";
 		String city = "some city";
 		String street = "some street";
 		SaleOrRent rent = SaleOrRent.RENT;
+		PropertyType type = PropertyType.HOUSE;
 		Double price = 2d;
-		Property mockPropertyForService = new Property(rent, price, description, city, street,
+		Property mockPropertyForService = new Property(type, rent, price, description, city, street, byteOfPicture);
+
+		Property mockPropertyFromService = new Property(1L, type, rent, price, description, city, street,
 				byteOfPicture);
-		
-		Property mockPropertyFromService = new Property(1L, rent, price, description, city,
-				street, byteOfPicture);
 		when(propertyService.addNewProperty(mockPropertyForService)).thenReturn(mockPropertyFromService);
 
 		// when
-        MockHttpServletResponse result = mockMvc.perform(MockMvcRequestBuilders.multipart("/api/v1/properties")
-                        .file(picture)
-                        .param("city", city)
-                        .param("description", description)
-                        .param("saleOrRent", rent.toString())
-                        .param("price", price.toString())
-                        .param("street", street)).andReturn().getResponse();
-        
-        //then
+		MockHttpServletResponse result = mockMvc
+				.perform(MockMvcRequestBuilders.multipart("/api/v1/properties").file(picture).param("city", city)
+						.param("description", description).param("type", type.toString())
+						.param("saleOrRent", rent.toString()).param("price", price.toString()).param("street", street))
+				.andReturn().getResponse();
+
+		// then
 		assertThat(result.getStatus(), is(200));
-		Property returnedProperty = objectMapper.readValue(result.getContentAsString(), Property.class);
-		assertThat(returnedProperty,is(mockPropertyFromService));
+		String contentAsString = result.getContentAsString();
+                    		Property returnedProperty = objectMapper.readValue(contentAsString, Property.class);
+		assertThat(returnedProperty, is(mockPropertyFromService));
 	}
 
 }

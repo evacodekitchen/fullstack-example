@@ -1,10 +1,12 @@
 package com.evacodekitchen.realestateportalserver.rest;
 
 import java.util.List;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +23,7 @@ import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
 
 @RestController
 @RequestMapping("/api/v1/properties")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PropertyController {
 
 	PropertyService propertyService;
@@ -45,10 +48,14 @@ public class PropertyController {
 
 	@GetMapping
 	public List<Property> getAllProperties(@RequestParam(required = false) String city, Pageable pageable) {
+		List<Property> allProperties = null;
 		if (city == null) {
-			return propertyService.getAllProperties(pageable);
+			allProperties = propertyService.getAllProperties(pageable);
+		}else {
+			allProperties = propertyService.getPropertiesByCity(city, pageable);
 		}
-		return propertyService.getPropertiesByCity(city, pageable);
+		logger.info("Nr of properties to be listed " + allProperties.size());
+		return allProperties;
 	}
 	
 	@DeleteMapping("/{id}")

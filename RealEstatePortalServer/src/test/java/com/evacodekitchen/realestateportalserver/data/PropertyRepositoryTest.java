@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
+import com.evacodekitchen.realestateportalserver.usecase.entity.PropertyType;
 import com.evacodekitchen.realestateportalserver.usecase.entity.SaleOrRent;
 
 @RunWith(SpringRunner.class)
@@ -28,7 +29,7 @@ public class PropertyRepositoryTest {
 	@Test
 	public void propertyByIdShouldBeRetrived() {
 		// given
-		Property mockProperty = new Property(SaleOrRent.RENT, 456d, "some description", "some city", "some street",
+		Property mockProperty = new Property(PropertyType.FLAT, SaleOrRent.RENT, 456d, "some description", "some city", "some street",
 				new byte[0]);
 		Property savedProperty = testEntityManager.persist(mockProperty);
 
@@ -42,7 +43,7 @@ public class PropertyRepositoryTest {
 	@Test
 	public void propertyShouldBePersisted() {
 		// given
-		Property propertyToBePersisted = new Property(SaleOrRent.RENT, 456d, "some description", "some city", "some street",
+		Property propertyToBePersisted = new Property(PropertyType.FLAT, SaleOrRent.RENT, 456d, "some description", "some city", "some street",
 				new byte[0]);
 		
 		// when

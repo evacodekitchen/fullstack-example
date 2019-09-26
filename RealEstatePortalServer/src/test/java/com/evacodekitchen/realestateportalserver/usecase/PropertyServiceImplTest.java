@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.evacodekitchen.realestateportalserver.data.PropertyRepository;
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
+import com.evacodekitchen.realestateportalserver.usecase.entity.PropertyType;
 import com.evacodekitchen.realestateportalserver.usecase.entity.SaleOrRent;
 
 @RunWith(SpringRunner.class)
@@ -40,7 +41,7 @@ public class PropertyServiceImplTest {
 	@Test
 	public void whenPropertyExistsWithGivenId_ItShouldBeRetrievedFromUseCaseLayer() {
 		// given
-		Property mockProperty = new Property(123L, SaleOrRent.SALE, 1d, "some desc", "some city", "some street", new byte[0]);
+		Property mockProperty = new Property(123L, PropertyType.HOUSE, SaleOrRent.SALE, 1d, "some desc", "some city", "some street", new byte[0]);
 		when(propertyRepository.findById(123L)).thenReturn(Optional.of(mockProperty));
 		
 		// when
@@ -66,8 +67,8 @@ public class PropertyServiceImplTest {
 	@Test
 	public void propertyShouldBePassedToDbLayerTBeSaved() {
 		// given
-		Property propertyToBeAdded = new Property(SaleOrRent.SALE, 1d, "some desc", "some city", "some street", new byte[0]);
-		Property mockPropertyWithId = new Property(1L, SaleOrRent.SALE, 1d, "some desc", "some city", "some street", new byte[0]);
+		Property propertyToBeAdded = new Property(PropertyType.HOUSE, SaleOrRent.SALE, 1d, "some desc", "some city", "some street", new byte[0]);
+		Property mockPropertyWithId = new Property(1L, PropertyType.HOUSE, SaleOrRent.SALE, 1d, "some desc", "some city", "some street", new byte[0]);
 		when(propertyRepository.save(propertyToBeAdded)).thenReturn(mockPropertyWithId);
 		
 		// when

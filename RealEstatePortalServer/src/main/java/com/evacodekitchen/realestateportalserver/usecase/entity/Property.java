@@ -28,14 +28,16 @@ public class Property {
 
 	private String street;
 
+	private PropertyType type;
+
 	public Property() {
-		super();
 	}
 
-	public Property(Long id, SaleOrRent saleOrRent, Double price, String description, String city, String street,
+	public Property(Long id, PropertyType type, SaleOrRent saleOrRent, Double price, String description, String city, String street,
 			byte[] picture) {
 		super();
 		this.id = id;
+		this.setType(type);
 		this.saleOrRent = saleOrRent;
 		this.price = price;
 		this.description = description;
@@ -44,9 +46,10 @@ public class Property {
 		this.picture = picture;
 	}
 
-	public Property(SaleOrRent saleOrRent, Double price, String description, String city, String street,
-			byte[] picture) {
+	public Property(PropertyType type, SaleOrRent saleOrRent, Double price, String description, String city,
+			String street, byte[] picture) {
 		super();
+		this.setType(type);
 		this.saleOrRent = saleOrRent;
 		this.price = price;
 		this.description = description;
@@ -54,6 +57,7 @@ public class Property {
 		this.street = street;
 		this.picture = picture;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -93,6 +97,8 @@ public class Property {
 				return false;
 		} else if (!street.equals(other.street))
 			return false;
+		if (type != other.type)
+			return false;
 		return true;
 	}
 
@@ -103,6 +109,7 @@ public class Property {
 	public String getDescription() {
 		return description;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -124,6 +131,10 @@ public class Property {
 		return street;
 	}
 
+	public PropertyType getType() {
+		return type;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -135,6 +146,7 @@ public class Property {
 		result = prime * result + ((price == null) ? 0 : price.hashCode());
 		result = prime * result + ((saleOrRent == null) ? 0 : saleOrRent.hashCode());
 		result = prime * result + ((street == null) ? 0 : street.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
@@ -166,10 +178,14 @@ public class Property {
 		this.street = street;
 	}
 
+	public void setType(PropertyType type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
-		return "Property [id=" + id + ", city=" + city + ", description=" + description + ", picture="
-				+ Arrays.toString(picture) + ", price=" + price + ", saleOrRent=" + saleOrRent + ", street=" + street
-				+ "]";
+		return "Property [type=" + type + ", city=" + city + ", description=" + description + ", id=" + id
+				+ ", picture=" + Arrays.toString(picture) + ", price=" + price + ", saleOrRent=" + saleOrRent
+				+ ", street=" + street + "]";
 	}
 }

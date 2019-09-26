@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.evacodekitchen.realestateportalserver.data.PropertyRepository;
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
+import com.evacodekitchen.realestateportalserver.usecase.entity.PropertyType;
 import com.evacodekitchen.realestateportalserver.usecase.entity.SaleOrRent;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,7 +58,7 @@ public class PropertyRestApiIT {
 	@Test
 	public void whenPropertyIsSearchById_thenItIsRetrieved() throws Exception {
 		// given
-		Property mockProperty = new Property(SaleOrRent.RENT, 2d, "some descr", "some city", null, null);
+		Property mockProperty = new Property(PropertyType.HOUSE, SaleOrRent.RENT, 2d, "some descr", "some city", null, null);
 		Property savedProperty = propertyRepository.save(mockProperty);
 
 		// when
@@ -75,7 +76,7 @@ public class PropertyRestApiIT {
 	@Test
 	public void whenNewPropertyIsPosted_thenTheSavedPropertyIsRetrievedFromInMemoryDb() throws Exception {
 		// given
-		FileInputStream fis = new FileInputStream("src/test/resources/testpicture.jpg");
+		FileInputStream fis = new FileInputStream("src/test/resources/house1.jpg");
 		byte[] byteOfPicture = fis.readAllBytes();
 		MockMultipartFile picture = new MockMultipartFile("picture", "somePicture.jpg", "text/plain", byteOfPicture);
 		fis.close();
@@ -95,7 +96,7 @@ public class PropertyRestApiIT {
 		// then
 		assertThat(result.getStatus(), is(200));
 		Property returnedProperty = objectMapper.readValue(result.getContentAsString(), Property.class);
-		Property expectedSavedProperty = new Property(rent, price, description, city, street, byteOfPicture);
+		Property expectedSavedProperty = new Property(PropertyType.FLAT, rent, price, description, city, street, byteOfPicture);
 		assertThat(returnedProperty.getCity(), is(expectedSavedProperty.getCity()));
 		assertThat(returnedProperty.getSaleOrRent(), is(expectedSavedProperty.getSaleOrRent()));
 		assertThat(returnedProperty.getStreet(), is(expectedSavedProperty.getStreet()));
@@ -107,9 +108,9 @@ public class PropertyRestApiIT {
 	@Test
 	public void whenSearchForAllProperties_thenAllPropertiesAreRetrieved() throws Exception {
 		// given
-		Property mockProperty1 = new Property(SaleOrRent.RENT, 2d, "some descr1", "some city1", null, null);
-		Property mockProperty2 = new Property(SaleOrRent.RENT, 3d, "some descr2", "some city2", null, null);
-		Property mockProperty3 = new Property(SaleOrRent.RENT, 4d, "some descr3", "some city3", null, null);
+		Property mockProperty1 = new Property(PropertyType.HOUSE, SaleOrRent.RENT, 2d, "some descr1", "some city1", null, null);
+		Property mockProperty2 = new Property(PropertyType.HOUSE, SaleOrRent.RENT, 3d, "some descr2", "some city2", null, null);
+		Property mockProperty3 = new Property(PropertyType.HOUSE, SaleOrRent.RENT, 4d, "some descr3", "some city3", null, null);
 		Property savedProperty1 = propertyRepository.save(mockProperty1);
 		Property savedProperty2 = propertyRepository.save(mockProperty2);
 		Property savedProperty3 = propertyRepository.save(mockProperty3);
@@ -133,9 +134,9 @@ public class PropertyRestApiIT {
 	@Test
 	public void whenSearchForAllProperties_thenFirstPageIsRetrieved() throws Exception {
 		// given
-		Property mockProperty1 = new Property(SaleOrRent.RENT, 2d, "some descr1", "some city1", null, null);
-		Property mockProperty2 = new Property(SaleOrRent.RENT, 3d, "some descr2", "some city2", null, null);
-		Property mockProperty3 = new Property(SaleOrRent.RENT, 4d, "some descr3", "some city3", null, null);
+		Property mockProperty1 = new Property(PropertyType.HOUSE, SaleOrRent.RENT, 2d, "some descr1", "some city1", null, null);
+		Property mockProperty2 = new Property(PropertyType.HOUSE, SaleOrRent.RENT, 3d, "some descr2", "some city2", null, null);
+		Property mockProperty3 = new Property(PropertyType.HOUSE, SaleOrRent.RENT, 4d, "some descr3", "some city3", null, null);
 		Property savedProperty1 = propertyRepository.save(mockProperty1);
 		Property savedProperty2 = propertyRepository.save(mockProperty2);
 		Property savedProperty3 = propertyRepository.save(mockProperty3);
@@ -159,9 +160,9 @@ public class PropertyRestApiIT {
 	@Test
 	public void whenSearchForPropertiesInGivenCity_thenOnlyPropertiesInThatCityAreRetrieved() throws Exception {
 		// given
-		Property mockProperty1 = new Property(SaleOrRent.RENT, 2d, "some descr1", "some city1", null, null);
-		Property mockProperty2 = new Property(SaleOrRent.RENT, 3d, "some descr2", "some city2", null, null);
-		Property mockProperty3 = new Property(SaleOrRent.RENT, 4d, "some descr3", "some city1", null, null);
+		Property mockProperty1 = new Property(PropertyType.HOUSE, SaleOrRent.RENT, 2d, "some descr1", "some city1", null, null);
+		Property mockProperty2 = new Property(PropertyType.HOUSE, SaleOrRent.RENT, 3d, "some descr2", "some city2", null, null);
+		Property mockProperty3 = new Property(PropertyType.FLAT, SaleOrRent.RENT, 4d, "some descr3", "some city1", null, null);
 		Property savedProperty1 = propertyRepository.save(mockProperty1);
 		Property savedProperty2 = propertyRepository.save(mockProperty2);
 		Property savedProperty3 = propertyRepository.save(mockProperty3);
@@ -185,7 +186,7 @@ public class PropertyRestApiIT {
 	@Test
 	public void whenDeleteApiIsCalled_thenPropertyIsDeletedFromRepo() throws Exception {
 		// given
-		Property mockProperty = new Property(SaleOrRent.RENT, 2d, "some descr", "some city", null, null);
+		Property mockProperty = new Property(PropertyType.FLAT, SaleOrRent.RENT, 2d, "some descr", "some city", null, null);
 		Property savedProperty = propertyRepository.save(mockProperty);
 
 		// when

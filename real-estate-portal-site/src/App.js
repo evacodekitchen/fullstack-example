@@ -1,36 +1,25 @@
-import React, { useState } from "react";
+import React, {useState, useEffect} from 'react';
+import REPHeader from "./components/Header";
+import PropertyList from "./components/PropertyList";
+import axios from 'axios'
 
-import Jumbotron from "react-bootstrap/Jumbotron";
-import Toast from "react-bootstrap/Toast";
-import Container from 'react-bootstrap/Container'
+const App = () => {
 
-import "./App.css";
+    const [properties, setProperties] = useState([])
+    useEffect(() => {
 
-const ExampleToast = ({ children }) => {
-  const [show, toggleShow] = useState(true);
+        axios.get("http://localhost:8080/api/v1/properties").then(response => {
+            setProperties(response.data)
+        }).catch( e=> {
+            console.log(e)
+        })
+    }, [])
 
-  return (
-      <Toast show={show} onClose={() => toggleShow(!show)}>
-        <Toast.Header>
-          <strong className="mr-auto">React-Bootstrap</strong>
-        </Toast.Header>
-        <Toast.Body>{children}</Toast.Body>
-      </Toast>
-  );
+    return (
+        <div>
+            <REPHeader/>
+            <PropertyList properties={properties}></PropertyList>
+        </div>
+    );
 };
-
-const App = () => (
-    <Container className="p-3">
-      <Jumbotron>
-        <h1 className="header">Welcome To React-Bootstrap</h1>
-        <ExampleToast className="toast">
-          We now have Toasts
-          <span role="img" aria-label="tada">
-          🎉
-      </span>
-        </ExampleToast>
-      </Jumbotron>
-    </Container>
-);
-
 export default App;

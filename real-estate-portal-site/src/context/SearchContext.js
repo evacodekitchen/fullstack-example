@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 export const Context = createContext({});
 
 export const Provider = props => {
-    // Initial values are obtained from the props
+
     const [searchedCity, setSearchedCity] = useState("");
 
     const searchContext = {

@@ -1,17 +1,20 @@
 import React from 'react';
-import REPHeader from "./components/Header";
-import PropertyList from "./components/PropertyList";
-import {SearchContextProvider} from "./context/SearchContext";
+import SearchRealEstatesPage from './pages/SearchRealEstatesPage'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import PropertyDetails from "./pages/PropertyDetailsPage";
+
+const NoMatchRoute = () => <div>404 Page</div>;
 
 const App = () => {
-
     return (
-        <SearchContextProvider>
-
-                <REPHeader/>
-                <PropertyList></PropertyList>
-
-        </SearchContextProvider>
+        <Router>
+            <Switch>
+                <Route path="/" exact component={SearchRealEstatesPage}/>
+                <Route path="/properties/:propertyId" exact component={PropertyDetails}/>
+                <Route component={NoMatchRoute}/>
+            </Switch>
+        </Router>
     );
+
 };
 export default App;

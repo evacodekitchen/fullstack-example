@@ -1,6 +1,6 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card'
-import Button from 'react-bootstrap/Button'
+import {Link} from "react-router-dom";
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
@@ -29,7 +29,7 @@ const PropertyList = () => {
     }, [searchedCity])
 
     const cards = properties.map(property =>
-        <Col key={property.id}>
+        <Col key={property.id} className="mt-sm-4">
             <Card style={{width: '18rem'}}>
                 <Card.Img variant="top" src={"data:image/png;base64," + property.picture}/>
                 <Card.Body>
@@ -37,7 +37,7 @@ const PropertyList = () => {
                     <Card.Text>{property.price + " Euro"}</Card.Text>
                     <Card.Text>{property.city}</Card.Text>
                     <Card.Text className={"text-truncate"}>{property.description}</Card.Text>
-                    <Button variant="primary">Read more</Button>
+                    <Link to={`/properties/${property.id}`}>View details</Link>
                 </Card.Body>
             </Card>
         </Col>

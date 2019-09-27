@@ -17,7 +17,6 @@ const PropertyList = () => {
     const [properties, setProperties] = useState([])
 
     useEffect(() => {
-        alert("change" + searchedCity)
         let url = "http://localhost:8080/api/v1/properties"
         if (searchedCity) {
             url = url + "?city=" + searchedCity

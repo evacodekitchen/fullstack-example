@@ -10,7 +10,7 @@ import {SearchContext} from "../context/SearchContext";
 import {useContext} from "react"
 import {Link} from "react-router-dom";
 
-const ActionHeader = () => {
+const ActionHeader = ({searchEnabled}) => {
 
     const searchContext = useContext(SearchContext)
 
@@ -35,12 +35,16 @@ const ActionHeader = () => {
                 <Nav className="mr-auto">
                     <Nav.Link as={Link} to={"/properties"}>Home</Nav.Link>
                 </Nav>
-                <Form inline onSubmit={(event) => updateSearchedCityInContext(event)}>
+                {searchEnabled && <Form inline onSubmit={(event) => updateSearchedCityInContext(event)}>
                     <FormControl onChange={(event) => updateTypedSearchedCity(event.target.value)} type="text"
                                  placeholder="Search in city" className="mr-sm-2"/>
-                </Form>
-                <Link to={"/properties/new"}> <Button variant="warning" className="ml-md-4">Add new property</Button></Link>
+                </Form>}
+                <Link to={"/properties/new"}>
+                    <Button variant="warning" className="ml-md-4">Add new property</Button></Link>
             </Navbar.Collapse></Container>
     </Navbar>
 };
+ActionHeader.defaultProps = {
+    searchEnabled: true
+}
 export default ActionHeader;

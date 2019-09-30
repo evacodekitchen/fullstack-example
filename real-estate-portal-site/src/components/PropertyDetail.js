@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card'
 const PropertyDetail = ({property}) => {
 
     return <Card className="text-center">
-        <Card.Header>{property.city + ", " + property.street}</Card.Header>
+        <Card.Header>{property.city + ", " + property.street} street</Card.Header>
         <Card.Body>
             <Card.Title>{property.type} for {property.saleOrRent}, {property.price} EURO</Card.Title>
             <Card.Img variant="bottom" src={"data:image/png;base64," + property.picture}/>

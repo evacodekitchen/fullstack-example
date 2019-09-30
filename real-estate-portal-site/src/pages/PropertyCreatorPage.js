@@ -9,6 +9,7 @@ import Card from "react-bootstrap/Card";
 import Alert from "react-bootstrap/Alert";
 import Feedback from "react-bootstrap/Feedback";
 import FormCheck from "react-bootstrap/FormCheck";
+import ActionHeader from "../components/ActionHeader";
 
 const PropertyCreatorPage = () => {
 
@@ -22,7 +23,7 @@ const PropertyCreatorPage = () => {
         event.preventDefault();
         event.stopPropagation();
         setValidated(true);
-        
+
         if (form.checkValidity()) {
             const formData = new FormData(event.target);
             postData(formData)
@@ -131,28 +132,29 @@ const PropertyCreatorPage = () => {
     </Form>
 
     return (
-        <Container>
-            <Link to={`/properties`}>Go back to search properties</Link>
-            <Card className="mb-4 p-4">
-
-                {loading && (
-                    <Alert key="alert-loading" variant="info">
-                        Adding new property...
-                    </Alert>
-                )}
-                {createdPropId && (
-                    <Alert key="alert-loading" variant="success">
-                        Property created with id {createdPropId}
-                    </Alert>
-                )}
-                {error && (
-                    <Alert key="alert-error" variant="danger">
-                        Oops, something went wrong, please try again!
-                    </Alert>
-                )}
-                {form}
-            </Card>
-        </Container>
+        <div>
+            <ActionHeader searchEnabled={false}/>
+            <Container>
+                <Card className="mt-4 p-4">
+                    {loading && (
+                        <Alert key="alert-loading" variant="info">
+                            Adding new property...
+                        </Alert>
+                    )}
+                    {createdPropId && (
+                        <Alert key="alert-loading" variant="success">
+                            Property created with id {createdPropId}
+                        </Alert>
+                    )}
+                    {error && (
+                        <Alert key="alert-error" variant="danger">
+                            Oops, something went wrong, please try again!
+                        </Alert>
+                    )}
+                    {form}
+                </Card>
+            </Container>
+        </div>
     )
 };
 export default PropertyCreatorPage;

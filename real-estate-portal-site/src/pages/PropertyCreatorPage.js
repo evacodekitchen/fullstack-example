@@ -101,7 +101,7 @@ const PropertyCreatorPage = () => {
 
             <Form.Group as={Col} md={4} controlId="priceGroup">
                 <Form.Label>Price in Euro</Form.Label>
-                <Form.Control name="price" placeholder="Price" required/>
+                <Form.Control type="number" name="price" placeholder="Price" required/>
                 <Form.Control.Feedback type="invalid">
                     Please provide a number as price.
                 </Form.Control.Feedback>

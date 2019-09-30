@@ -4,7 +4,6 @@ import {useState} from "react"
 import axios from "axios";
 import PropertyDetail from "../components/PropertyDetail";
 import Container from "react-bootstrap/Container";
-import {Link} from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import ActionHeader from "../components/ActionHeader";
 

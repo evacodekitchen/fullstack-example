@@ -5,6 +5,7 @@ import axios from "axios";
 import PropertyDetail from "../components/PropertyDetail";
 import Container from "react-bootstrap/Container";
 import {Link} from "react-router-dom";
+import Alert from "react-bootstrap/Alert";
 
 const PropertyDetailsPage = ({match}) => {
     const {
@@ -20,12 +21,14 @@ const PropertyDetailsPage = ({match}) => {
         setLoading(true)
         setError(false)
         axios.get(url).then(response => {
+            setLoading(false)
             setProperty(response.data)
         }).catch(e => {
+            setLoading(false)
             setError(true)
             console.log(e)
         })
-        setLoading(false)
+
     }, [propertyId])
 
 
@@ -33,14 +36,14 @@ const PropertyDetailsPage = ({match}) => {
         <Container>
             <Link to={"/properties"}>Go back to search properties</Link>
             {loading && (
-                <div style={{color: `green`}}>
+                <Alert key="alert-loading" variant="info">
                     Loading property detail for property ID: <strong>{propertyId}</strong> ...
-                </div>
+                </Alert>
             )}
             {error && (
-                <div style={{color: `red`}}>
-                    Error occurred while fetching data, please reload the page
-                </div>
+                <Alert key="alert-error" variant="danger">
+                    Oops, something went wrong, please try again!
+                </Alert>
             )}
             {property && (
                 <PropertyDetail property={property}/>

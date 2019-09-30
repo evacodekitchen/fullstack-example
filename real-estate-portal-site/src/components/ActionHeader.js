@@ -8,8 +8,9 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import {SearchContext} from "../context/SearchContext";
 import {useContext} from "react"
+import {Link} from "react-router-dom";
 
-const REPHeader = () => {
+const ActionHeader = () => {
 
     const searchContext = useContext(SearchContext)
 
@@ -21,7 +22,8 @@ const REPHeader = () => {
         typedSearchedCity = typedValue
     }
 
-    const updateSearchedCityInContext = () => {
+    const updateSearchedCityInContext = (event) => {
+        event.preventDefault()
         setSearchedCity(typedSearchedCity)
     }
 
@@ -41,12 +43,12 @@ const REPHeader = () => {
                         <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
-                <Form inline>
+                <Form inline onSubmit={(event) => updateSearchedCityInContext(event)}>
                     <FormControl onChange={(event) => updateTypedSearchedCity(event.target.value)} type="text"
                                  placeholder="Search in city" className="mr-sm-2"/>
-                    <Button variant="outline-success" onClick={() => updateSearchedCityInContext()}>Search</Button>
                 </Form>
+                <Link to={"/properties/new"}> <Button variant="warning" className="ml-md-4">Add new property</Button></Link>
             </Navbar.Collapse></Container>
     </Navbar>
 };
-export default REPHeader;
+export default ActionHeader;

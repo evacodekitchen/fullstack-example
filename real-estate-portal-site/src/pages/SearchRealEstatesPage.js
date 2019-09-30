@@ -1,12 +1,12 @@
 import React from 'react';
-import REPHeader from "../components/Header";
+import ActionHeader from "../components/ActionHeader";
 import PropertyList from "../components/PropertyList";
 import {SearchContextProvider} from "../context/SearchContext";
 
 const SearchRealEstatesPage = () => {
     return (
         <SearchContextProvider>
-            <REPHeader/>
+            <ActionHeader/>
             <PropertyList></PropertyList>
         </SearchContextProvider>
     );

@@ -31,15 +31,15 @@ const PropertyDetailsPage = ({match}) => {
 
     return (
         <Container>
-            <Link to={`/`}>Go back to search properties</Link>
+            <Link to={"/properties"}>Go back to search properties</Link>
             {loading && (
                 <div style={{color: `green`}}>
-                    loading book detail for book ID: <strong>{propertyId}</strong>
+                    Loading property detail for property ID: <strong>{propertyId}</strong> ...
                 </div>
             )}
             {error && (
                 <div style={{color: `red`}}>
-                    some error occurred, while fetching api
+                    Error occurred while fetching data, please reload the page
                 </div>
             )}
             {property && (

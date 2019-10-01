@@ -1,8 +1,8 @@
 package com.evacodekitchen.realestateportalserver.usecase;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
@@ -12,9 +12,9 @@ public interface PropertyService {
 
 	public Property addNewProperty(Property newProperty);
 
-	public List<Property> getAllProperties(Pageable pageable);
+	public Page<Property> getAllProperties(Pageable pageable);
 
-	public List<Property> getPropertiesByCity(String city, Pageable pageable);
+	public Page<Property> getPropertiesByCity(String city, Pageable pageable);
 
 	public void deleteById(Long id);
 }

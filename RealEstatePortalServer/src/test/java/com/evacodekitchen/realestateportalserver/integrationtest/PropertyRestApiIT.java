@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.evacodekitchen.realestateportalserver.data.PropertyRepository;
+import com.evacodekitchen.realestateportalserver.rest.dto.PropertyPageDTO;
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
 import com.evacodekitchen.realestateportalserver.usecase.entity.PropertyType;
 import com.evacodekitchen.realestateportalserver.usecase.entity.SaleOrRent;
@@ -122,13 +123,13 @@ public class PropertyRestApiIT {
 		assertThat(response.getStatus(), is(HttpStatus.OK.value()));
 		assertThat(response.getContentType(), is(MediaType.APPLICATION_JSON_UTF8.toString()));
 		String contentAsString = response.getContentAsString();
-		List<Property> propertiesInResponse = (List<Property>) objectMapper.readValue(contentAsString,
-				new TypeReference<List<Property>>() {
+		PropertyPageDTO propertiesInResponse = (PropertyPageDTO) objectMapper.readValue(contentAsString,
+				new TypeReference<PropertyPageDTO>() {
 				});
-		assertThat(propertiesInResponse.size(), is(3));
-		assertThat(propertiesInResponse.get(0), is(savedProperty1));
-		assertThat(propertiesInResponse.get(1), is(savedProperty2));
-		assertThat(propertiesInResponse.get(2), is(savedProperty3));
+		assertThat(propertiesInResponse.getPropertyList().size(), is(3));
+		assertThat(propertiesInResponse.getPropertyList().get(0), is(savedProperty1));
+		assertThat(propertiesInResponse.getPropertyList().get(1), is(savedProperty2));
+		assertThat(propertiesInResponse.getPropertyList().get(2), is(savedProperty3));
 	}
 
 	@Test
@@ -149,12 +150,12 @@ public class PropertyRestApiIT {
 		assertThat(response.getStatus(), is(HttpStatus.OK.value()));
 		assertThat(response.getContentType(), is(MediaType.APPLICATION_JSON_UTF8.toString()));
 		String contentAsString = response.getContentAsString();
-		List<Property> propertiesInResponse = (List<Property>) objectMapper.readValue(contentAsString,
-				new TypeReference<List<Property>>() {
+		PropertyPageDTO propertiesInResponse = (PropertyPageDTO) objectMapper.readValue(contentAsString,
+				new TypeReference<PropertyPageDTO>() {
 				});
-		assertThat(propertiesInResponse.size(), is(2));
-		assertThat(propertiesInResponse.get(0), is(savedProperty1));
-		assertThat(propertiesInResponse.get(1), is(savedProperty2));
+		assertThat(propertiesInResponse.getPropertyList().size(), is(2));
+		assertThat(propertiesInResponse.getPropertyList().get(0), is(savedProperty1));
+		assertThat(propertiesInResponse.getPropertyList().get(1), is(savedProperty2));
 	}
 
 	@Test
@@ -175,14 +176,42 @@ public class PropertyRestApiIT {
 		assertThat(response.getStatus(), is(HttpStatus.OK.value()));
 		assertThat(response.getContentType(), is(MediaType.APPLICATION_JSON_UTF8.toString()));
 		String contentAsString = response.getContentAsString();
-		List<Property> propertiesInResponse = (List<Property>) objectMapper.readValue(contentAsString,
-				new TypeReference<List<Property>>() {
+		PropertyPageDTO propertiesInResponse = (PropertyPageDTO) objectMapper.readValue(contentAsString,
+				new TypeReference<PropertyPageDTO>() {
 				});
-		assertThat(propertiesInResponse.size(), is(2));
-		assertThat(propertiesInResponse.get(0), is(savedProperty1));
-		assertThat(propertiesInResponse.get(1), is(savedProperty3));
+		assertThat(propertiesInResponse.getPropertyList().size(), is(2));
+		assertThat(propertiesInResponse.getPropertyList().get(0), is(savedProperty1));
+		assertThat(propertiesInResponse.getPropertyList().get(1), is(savedProperty3));
 	}
 
+	@Test
+	public void whenSearchForPropertiesInGivenCityWithPaging_thenOnlyTheRequiredPageIsRetrieved() throws Exception {
+		// given
+		Property mockProperty1 = new Property(PropertyType.HOUSE, SaleOrRent.RENT, 2d, "some descr1", "some city1", null, null);
+		Property mockProperty2 = new Property(PropertyType.HOUSE, SaleOrRent.RENT, 3d, "some descr2", "some city2", null, null);
+		Property mockProperty3 = new Property(PropertyType.FLAT, SaleOrRent.RENT, 4d, "some descr3", "some city1", null, null);
+		Property mockProperty4 = new Property(PropertyType.FLAT, SaleOrRent.RENT, 4d, "some descr3", "some city1", null, null);
+		Property savedProperty1 = propertyRepository.save(mockProperty1);
+		Property savedProperty2 = propertyRepository.save(mockProperty2);
+		Property savedProperty3 = propertyRepository.save(mockProperty3);
+		Property savedProperty4 = propertyRepository.save(mockProperty4);
+
+		// when
+		MockHttpServletResponse response = mockMvc.perform(get("/api/v1/properties?page=1&size=2&city=some city1")).andReturn()
+				.getResponse();
+
+		// then
+		assertThat(response.getStatus(), is(HttpStatus.OK.value()));
+		assertThat(response.getContentType(), is(MediaType.APPLICATION_JSON_UTF8.toString()));
+		String contentAsString = response.getContentAsString();
+		PropertyPageDTO propertiesInResponse = (PropertyPageDTO) objectMapper.readValue(contentAsString,
+				new TypeReference<PropertyPageDTO>() {
+				});
+		assertThat(propertiesInResponse.getTotalNrOfPages(), is(2));
+		assertThat(propertiesInResponse.getPropertyList().size(), is(1));
+	}
+
+	
 	@Test
 	public void whenDeleteApiIsCalled_thenPropertyIsDeletedFromRepo() throws Exception {
 		// given

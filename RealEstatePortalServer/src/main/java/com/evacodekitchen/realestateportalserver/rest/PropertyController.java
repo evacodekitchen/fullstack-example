@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.evacodekitchen.realestateportalserver.rest.dto.NewPropertyDTO;
 import com.evacodekitchen.realestateportalserver.rest.dto.PropertyMapper;
+import com.evacodekitchen.realestateportalserver.rest.dto.PropertyPageDTO;
 import com.evacodekitchen.realestateportalserver.usecase.PropertyService;
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
 
@@ -47,17 +49,17 @@ public class PropertyController {
 	}
 
 	@GetMapping
-	public List<Property> getAllProperties(@RequestParam(required = false) String city, Pageable pageable) {
-		List<Property> allProperties = null;
+	public PropertyPageDTO getAllProperties(@RequestParam(required = false) String city, Pageable pageable) {
+		Page<Property> page = null;
 		if (city == null) {
-			allProperties = propertyService.getAllProperties(pageable);
-		}else {
-			allProperties = propertyService.getPropertiesByCity(city, pageable);
+			page = propertyService.getAllProperties(pageable);
+		} else {
+			page = propertyService.getPropertiesByCity(city, pageable);
 		}
-		logger.info("Nr of properties to be listed " + allProperties.size());
-		return allProperties;
+		logger.info("Nr of properties to be listed " + page.getNumberOfElements());
+		return new PropertyPageDTO(page.getContent(), page.getTotalPages());
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public void deleteProperty(@PathVariable Long id) {
 		propertyService.deleteById(id);

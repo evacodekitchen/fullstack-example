@@ -34,13 +34,11 @@ const PropertyList = () => {
         )
     )
 
-
     const turnPage = (event) => {
         const pageIndex = event.target.text
 
         setActivePageIndex(pageIndex - 1)
     }
-
 
     useEffect(() => {
         let url = "http://localhost:8080/api/v1/properties"
@@ -77,12 +75,9 @@ const PropertyList = () => {
     return <Container>
         <Row>{cards}</Row>
         <Row md={12} className={"mt-4 justify-content-md-center"}>
-
-                <Pagination>
-                    {pages}
-                </Pagination>
-
-
+            <Pagination>
+                {pages}
+            </Pagination>
         </Row>
     </Container>
 }

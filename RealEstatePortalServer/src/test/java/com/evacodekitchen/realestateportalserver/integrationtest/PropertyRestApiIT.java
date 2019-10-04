@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.io.FileInputStream;
-import java.util.List;
 import java.util.Optional;
 
 import org.hamcrest.Matchers;

@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.evacodekitchen.realestateportalserver.data.PropertyRepository;
+import com.evacodekitchen.realestateportalserver.rest.dto.PropertyDTO;
 import com.evacodekitchen.realestateportalserver.rest.dto.PropertyPageDTO;
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
 import com.evacodekitchen.realestateportalserver.usecase.entity.PropertyType;
@@ -70,8 +71,8 @@ public class PropertyRestApiIT {
 		assertThat(response.getStatus(), is(HttpStatus.OK.value()));
 		assertThat(response.getContentType(), is(MediaType.APPLICATION_JSON_UTF8.toString()));
 		String contentAsString = response.getContentAsString();
-		Property propertyInResponse = objectMapper.readValue(contentAsString, Property.class);
-		assertThat(propertyInResponse, is(savedProperty));
+		PropertyDTO propertyInResponse = objectMapper.readValue(contentAsString, PropertyDTO.class);
+		assertThat(propertyInResponse.getId(), is(savedProperty.getId()));
 	}
 
 	@Test
@@ -97,7 +98,7 @@ public class PropertyRestApiIT {
 		// then
 		assertThat(result.getStatus(), is(200));
 		Property returnedProperty = objectMapper.readValue(result.getContentAsString(), Property.class);
-		Property expectedSavedProperty = new Property(PropertyType.FLAT, rent, price, description, city, street, byteOfPicture);
+		PropertyDTO expectedSavedProperty = new PropertyDTO(1L, PropertyType.FLAT, rent, price, description, city, street, byteOfPicture);
 		assertThat(returnedProperty.getCity(), is(expectedSavedProperty.getCity()));
 		assertThat(returnedProperty.getSaleOrRent(), is(expectedSavedProperty.getSaleOrRent()));
 		assertThat(returnedProperty.getStreet(), is(expectedSavedProperty.getStreet()));

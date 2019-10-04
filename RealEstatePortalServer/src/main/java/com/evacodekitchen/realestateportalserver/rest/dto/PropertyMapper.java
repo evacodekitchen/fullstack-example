@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
 import com.evacodekitchen.realestateportalserver.usecase.entity.SaleOrRent;
 
+
 @Mapper
 public interface PropertyMapper {
 	
@@ -28,5 +29,7 @@ public interface PropertyMapper {
 			return null;
 		}
 	}
+
+	PropertyDTO propertyToPropertyDTO(Property addNewProperty);
 	
 }

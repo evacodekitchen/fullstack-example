@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.evacodekitchen.realestateportalserver.rest.dto.ErrorDTO;
+import com.evacodekitchen.realestateportalserver.rest.dto.PropertyDTO;
 import com.evacodekitchen.realestateportalserver.usecase.PropertyService;
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
 import com.evacodekitchen.realestateportalserver.usecase.entity.PropertyType;
@@ -53,8 +54,8 @@ public class PropertyControllerTest {
 		// then
 		assertThat(result.getResponse().getStatus(), is(200));
 		String contentAsString = result.getResponse().getContentAsString();
-		Property propertyInResponse = objectMapper.readValue(contentAsString, Property.class);
-		assertThat(propertyInResponse, is(mockProperty));
+		PropertyDTO propertyInResponse = objectMapper.readValue(contentAsString, PropertyDTO.class);
+		assertThat(propertyInResponse.getId(), is(12345L));
 	}
 
 	@Test
@@ -89,7 +90,7 @@ public class PropertyControllerTest {
 		Double price = 2d;
 		Property mockPropertyForService = new Property(type, rent, price, description, city, street, byteOfPicture);
 
-		Property mockPropertyFromService = new Property(1L, type, rent, price, description, city, street,
+		Property mockPropertyFromService = new Property(178L, type, rent, price, description, city, street,
 				byteOfPicture);
 		when(propertyService.addNewProperty(mockPropertyForService)).thenReturn(mockPropertyFromService);
 
@@ -103,8 +104,8 @@ public class PropertyControllerTest {
 		// then
 		assertThat(result.getStatus(), is(200));
 		String contentAsString = result.getContentAsString();
-                    		Property returnedProperty = objectMapper.readValue(contentAsString, Property.class);
-		assertThat(returnedProperty, is(mockPropertyFromService));
+		PropertyDTO returnedProperty = objectMapper.readValue(contentAsString, PropertyDTO.class);
+		assertThat(returnedProperty.getId(), is(178L));
 	}
 
 }

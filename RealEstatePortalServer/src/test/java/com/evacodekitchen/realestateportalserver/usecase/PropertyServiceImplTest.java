@@ -24,7 +24,10 @@ import com.evacodekitchen.realestateportalserver.usecase.entity.SaleOrRent;
 public class PropertyServiceImplTest {
 
 	@Autowired
-	PropertyService propertyService;
+	SearchPropertiesUseCase searchPropertiesService;
+	
+	@Autowired
+	CreatePropertyUseCase createPropertyService;
 	
 	@MockBean
 	PropertyRepository propertyRepository;
@@ -33,8 +36,18 @@ public class PropertyServiceImplTest {
     static class PropertyServiceImplTestContextConfiguration {
   
         @Bean
-        public PropertyService propertyService() {
-            return new PropertyServiceImpl();
+        public SearchPropertiesUseCase searchPropertiesUseCase() {
+            return new SearchPropertiesService();
+        }
+        
+        @Bean
+        public CreatePropertyUseCase createPropertyUseCase() {
+            return new CreatePropertyService();
+        }
+        
+        @Bean
+        public RemovePropertyUseCase removePropertyUseCase() {
+            return new RemovePropertyService();
         }
     }
 	
@@ -45,7 +58,7 @@ public class PropertyServiceImplTest {
 		when(propertyRepository.findById(123L)).thenReturn(Optional.of(mockProperty));
 		
 		// when
-		Optional<Property> propertyFromDbLayer = propertyService.findPropertyBy(123L);
+		Optional<Property> propertyFromDbLayer = searchPropertiesService.findPropertyBy(123L);
 		
 		//then
 		assertThat(propertyFromDbLayer.get(), is(mockProperty));
@@ -58,7 +71,7 @@ public class PropertyServiceImplTest {
 		when(propertyRepository.findById(123L)).thenReturn(mockNullProperty);
 		
 		// when
-		Optional<Property> propertyFromDbLayer = propertyService.findPropertyBy(123L);
+		Optional<Property> propertyFromDbLayer = searchPropertiesService.findPropertyBy(123L);
 		
 		//then
 		assertTrue(propertyFromDbLayer.isEmpty());
@@ -72,7 +85,7 @@ public class PropertyServiceImplTest {
 		when(propertyRepository.save(propertyToBeAdded)).thenReturn(mockPropertyWithId);
 		
 		// when
-		Property propertySaved = propertyService.addNewProperty(propertyToBeAdded);
+		Property propertySaved = createPropertyService.addNewProperty(propertyToBeAdded);
 		
 		//then
 		assertThat(propertySaved, is(mockPropertyWithId));

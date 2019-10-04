@@ -22,7 +22,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.evacodekitchen.realestateportalserver.rest.dto.ErrorDTO;
 import com.evacodekitchen.realestateportalserver.rest.dto.PropertyDTO;
-import com.evacodekitchen.realestateportalserver.usecase.PropertyService;
+import com.evacodekitchen.realestateportalserver.usecase.CreatePropertyUseCase;
+import com.evacodekitchen.realestateportalserver.usecase.RemovePropertyUseCase;
+import com.evacodekitchen.realestateportalserver.usecase.SearchPropertiesUseCase;
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
 import com.evacodekitchen.realestateportalserver.usecase.entity.PropertyType;
 import com.evacodekitchen.realestateportalserver.usecase.entity.SaleOrRent;
@@ -36,7 +38,13 @@ public class PropertyControllerTest {
 	MockMvc mockMvc;
 
 	@MockBean
-	PropertyService propertyService;
+	SearchPropertiesUseCase propertyService;
+
+	@MockBean
+	CreatePropertyUseCase createPropertyService;
+	
+	@MockBean
+	RemovePropertyUseCase removePropertyUseCase;
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -92,7 +100,7 @@ public class PropertyControllerTest {
 
 		Property mockPropertyFromService = new Property(178L, type, rent, price, description, city, street,
 				byteOfPicture);
-		when(propertyService.addNewProperty(mockPropertyForService)).thenReturn(mockPropertyFromService);
+		when(createPropertyService.addNewProperty(mockPropertyForService)).thenReturn(mockPropertyFromService);
 
 		// when
 		MockHttpServletResponse result = mockMvc

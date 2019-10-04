@@ -1,6 +1,5 @@
 package com.evacodekitchen.realestateportalserver.usecase;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import com.evacodekitchen.realestateportalserver.data.PropertyRepository;
 import com.evacodekitchen.realestateportalserver.usecase.entity.Property;
 
 @Service
-public class PropertyServiceImpl implements PropertyService {
+public class SearchPropertiesService implements SearchPropertiesUseCase {
 
 	@Autowired
 	PropertyRepository propertyRepository;
@@ -20,11 +19,6 @@ public class PropertyServiceImpl implements PropertyService {
 	@Override
 	public Optional<Property> findPropertyBy(Long id) {
 		return propertyRepository.findById(id);
-	}
-
-	@Override
-	public Property addNewProperty(Property newProperty) {
-		return propertyRepository.save(newProperty);
 	}
 
 	@Override
@@ -36,13 +30,4 @@ public class PropertyServiceImpl implements PropertyService {
 	public Page<Property> getPropertiesByCity(String city, Pageable pageable) {
 		return propertyRepository.findByCityOrderById(city, pageable);
 	}
-
-	@Override
-	public void deleteById(Long id) {
-		if (propertyRepository.existsById(id))
-			propertyRepository.deleteById(id);
-		else
-			throw new NoSuchElementException("Property with id " + id + " cannot be deleted, because it does not exists");
-	}
-
 }

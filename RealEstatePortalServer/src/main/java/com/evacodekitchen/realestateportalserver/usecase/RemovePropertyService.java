@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.evacodekitchen.realestateportalserver.data.PropertyRepository;
 
 @Service
-public class PropertyService implements RemovePropertyUseCase {
+public class RemovePropertyService implements RemovePropertyUseCase {
 
 	@Autowired
 	PropertyRepository propertyRepository;

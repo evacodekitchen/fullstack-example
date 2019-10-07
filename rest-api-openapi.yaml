@@ -8,21 +8,17 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 servers:
-- url: https://virtserver.swaggerhub.com/evacodekitchen/fullstack2/1.0.0
-  description: SwaggerHub API Auto Mocking
-- url: http://localhost:8080/api
+- url: http://localhost:8080/api/v1
   description: Demo server
 tags:
 - name: property
   description: create, update, delete and view property
-- name: user
-  description: register, view, login, logout user
 paths:
   /properties:
     get:
       tags: 
       - property
-      summary: List properties filtered by city
+      summary: List properties filtered optionally by city
       parameters: 
       - name: city
         in: query
@@ -75,35 +71,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Property'
-        400:
-          description: Invalid ID supplied
         404:
           description: Property not found
-    put:
-      tags:
-      - property
-      summary: Updates a property in the portal with form data
-      parameters:
-      - name: id
-        in: path
-        description: ID of property that needs to be updated
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
-          format: int64
-      requestBody:
-        $ref: '#/components/requestBodies/PropertyRequest'
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Property'
-        405:
-          description: Invalid input
     delete:
       tags:
       - property
@@ -113,99 +82,14 @@ paths:
         in: path
         description: Property id to delete
         required: true
-        style: simple
-        explode: false
         schema:
           type: integer
           format: int64
       responses:
         200:
           description: Property deleted
-        400:
-          description: Invalid ID supplied
         404:
           description: Property not found
-  /users:
-    post:
-      tags:
-      - user
-      summary: Create user
-      description: User registration
-      operationId: createUser
-      requestBody:
-        description: Created user
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserRegistrationRequest'
-        required: true
-      responses:
-        200:
-          description: User registered
-          content:
-            applicaiton/json:
-              schema:
-                $ref: '#/components/schemas/User'
-  /users/login:
-    post:
-      tags:
-      - user
-      summary: Logs user into the system
-      requestBody:
-        $ref: '#/components/requestBodies/UserLoginRequest'
-      responses:
-        200:
-          description: successful operation
-          content:
-            applicaiton/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        400:
-          description: Invalid username/password supplied
-  /users/{id}/logout:
-    get:
-      tags:
-      - user
-      summary: Logs out current logged in user session
-      parameters:
-      - name: id
-        in: path
-        description: The id of the user
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: number
-          format: int64
-      responses:
-        default:
-          description: successful operation
-  /users/{id}:
-    get:
-      tags:
-      - user
-      summary: Get user by user id
-      parameters:
-      - name: id
-        in: path
-        description: The id of the user
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: number
-          format: int64
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-        400:
-          description: Invalid user id supplied
-        404:
-          description: User not found
 components:
   schemas:
     Property:
@@ -216,16 +100,14 @@ components:
           format: int64
         saleOrRent:
           type: string
-          description: Type of listing
+          description: Is it for sale or for rent?
           enum:
-          - sale
-          - rent
+          - SALE
+          - RENT
         price:
           type: number
           format: double
         descripton:
-          maxLength: 100
-          minLength: 10
           type: string
         city:
           type: string
@@ -235,31 +117,30 @@ components:
           type: object
       example:
         id: 123456
-        saleOrRent: sale
+        saleOrRent: SALE
         price: 100
         descripton: Apartament with a view to the Danube is for sale.
         city: Budapest
         street: Kossuth
-        picture: some picture
+        picture: [46,76,345]
     ArrayOfProperties:
       type: array
-      items: 
+      items:  {
         $ref: '#/components/schemas/Property'
-    PropertyRequest:
+      }
+    NewPropertyRequest:
       type: object
       properties:
         saleOrRent:
           type: string
-          description: Type of listing
+          description: Is it for sale or rent?
           enum:
-          - sale
-          - rent
+          - SALE
+          - RENT
         price:
           type: number
           format: double
         descripton:
-          maxLength: 100
-          minLength: 10
           type: string
         city:
           type: string
@@ -267,76 +148,17 @@ components:
           type: string
           format: binary
       example:
-        saleOrRent: sale
+        saleOrRent: SALE
         price: 100
         descripton: Apartament with a view to the Danube is for sale.
         city: Budapest
         street: Kossuth
-        picture: some picture
-    User:
-      type: object
-      properties:
-        id:
-          type: number
-          format: int64
-        email:
-          type: string
-        password:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-    UserRegistrationRequest:
-      type: object
-      properties:
-        email:
-          type: string
-        password:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-    UserLoginRequest:
-      type: object
-      properties:
-        email:
-          type: string
-        password:
-          type: string
+        picture: [4,4565,34]
   requestBodies:
     PropertyRequest:
       description: Property object that needs to be added to the portal
       content:
         multipart/form-data:
           schema:
-            $ref: '#/components/schemas/PropertyRequest'
+            $ref: '#/components/schemas/NewPropertyRequest'
       required: true
-    UserRegistrationRequest:
-      description: User to be registered
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UserRegistrationRequest'
-      required: true
-    UserLoginRequest:
-      description: User to be registered
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UserLoginRequest'
-      required: true
-  securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: http://petstore.swagger.io/oauth/dialog
-          scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header

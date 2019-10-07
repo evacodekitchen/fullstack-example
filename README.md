@@ -1,2 +1,2 @@
 # fullstack-example
-An example project with database, rest server and webapplication client.
+An example project with React UI, Spring Boot server and H2 embedded db.

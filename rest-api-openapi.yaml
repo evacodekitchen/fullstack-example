@@ -32,7 +32,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ArrayOfProperties'
+                $ref: '#/components/schemas/PropetyPage'
     post:
       tags:
       - property
@@ -100,7 +100,6 @@ components:
           format: int64
         saleOrRent:
           type: string
-          description: Is it for sale or for rent?
           enum:
           - SALE
           - RENT
@@ -123,20 +122,30 @@ components:
         city: Budapest
         street: Kossuth
         picture: [46,76,345]
-    ArrayOfProperties:
-      type: array
-      items:  {
-        $ref: '#/components/schemas/Property'
-      }
+    PropetyPage:
+      type: object
+      properties:
+        totalNrOfPages:
+          type: number
+          format: int32
+        propertyList:
+          type: array
+          items:  {
+            $ref: '#/components/schemas/Property'
+          }
     NewPropertyRequest:
       type: object
       properties:
         saleOrRent:
           type: string
-          description: Is it for sale or rent?
           enum:
           - SALE
           - RENT
+        type:
+          type: string
+          enum: 
+          - FLAT
+          - HOUSE
         price:
           type: number
           format: double

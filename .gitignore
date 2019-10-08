@@ -18,3 +18,8 @@ real-estate-portal-site/.idea/modules.xml
 real-estate-portal-site/package-lock.json
 real-estate-portal-site/.idea/real-estate-portal-site.iml
 real-estate-portal-site/.project
+*.class
+diexample/target/classes/META-INF/MANIFEST.MF
+diexample/target/classes/META-INF/maven/com.evacodekitchen/diexample/pom.properties
+diexample/.classpath
+diexample/.project

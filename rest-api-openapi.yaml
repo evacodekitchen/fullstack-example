@@ -32,20 +32,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PropetyPage'
+                $ref: '#/components/schemas/PropetyPageDTO'
     post:
       tags:
       - property
       summary: Add new property for sale or for rent
       requestBody:
-        $ref: '#/components/requestBodies/PropertyRequest'
+        description: Property object that needs to be added to the portal
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NewPropertyDTO'
+        required: true
       responses:
         200:
           description: Property added
           content:
             applicaiton/json:
               schema:
-                $ref: '#/components/schemas/Property'
+                $ref: '#/components/schemas/PropertyDTO'
         405:
           description: Invalid input
   /properties/{id}:
@@ -70,7 +75,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Property'
+                $ref: '#/components/schemas/PropertyDTO'
         404:
           description: Property not found
     delete:
@@ -92,7 +97,7 @@ paths:
           description: Property not found
 components:
   schemas:
-    Property:
+    PropertyDTO:
       type: object
       properties:
         id:
@@ -103,6 +108,11 @@ components:
           enum:
           - SALE
           - RENT
+        type:
+          type: string
+          enum:
+          - FLAT
+          - HOUSE
         price:
           type: number
           format: double
@@ -117,12 +127,13 @@ components:
       example:
         id: 123456
         saleOrRent: SALE
+        type: HOUSE
         price: 100
         descripton: Apartament with a view to the Danube is for sale.
         city: Budapest
         street: Kossuth
         picture: [46,76,345]
-    PropetyPage:
+    PropetyPageDTO:
       type: object
       properties:
         totalNrOfPages:
@@ -131,9 +142,9 @@ components:
         propertyList:
           type: array
           items:  {
-            $ref: '#/components/schemas/Property'
+            $ref: '#/components/schemas/PropertyDTO'
           }
-    NewPropertyRequest:
+    NewPropertyDTO:
       type: object
       properties:
         saleOrRent:
@@ -163,11 +174,3 @@ components:
         city: Budapest
         street: Kossuth
         picture: [4,4565,34]
-  requestBodies:
-    PropertyRequest:
-      description: Property object that needs to be added to the portal
-      content:
-        multipart/form-data:
-          schema:
-            $ref: '#/components/schemas/NewPropertyRequest'
-      required: true

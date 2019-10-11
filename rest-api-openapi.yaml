@@ -50,9 +50,7 @@ paths:
           content:
             applicaiton/json:
               schema:
-                $ref: '#/components/schemas/PropertyDTO'
-        405:
-          description: Invalid input
+                $ref: '#/components/schemas/Property'
   /properties/{id}:
     get:
       tags:
@@ -64,8 +62,6 @@ paths:
         in: path
         description: ID of property to return
         required: true
-        style: simple
-        explode: false
         schema:
           type: integer
           format: int64
@@ -75,7 +71,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PropertyDTO'
+                $ref: '#/components/schemas/Property'
         404:
           description: Property not found
     delete:
@@ -97,7 +93,7 @@ paths:
           description: Property not found
 components:
   schemas:
-    PropertyDTO:
+    Property:
       type: object
       properties:
         id:
@@ -142,7 +138,7 @@ components:
         propertyList:
           type: array
           items:  {
-            $ref: '#/components/schemas/PropertyDTO'
+            $ref: '#/components/schemas/Property'
           }
     NewPropertyDTO:
       type: object

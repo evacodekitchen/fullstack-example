@@ -71,7 +71,7 @@ const PropertyCreatorPage = () => {
                 </Form.Check>
             </Form.Group>
             <Form.Group as={Col} md={6} controlId="saleOrRentGroup">
-                <Form.Label>Property type</Form.Label>
+                <Form.Label>For sale or for rent?</Form.Label>
                 <Form.Check>
                     <FormCheck.Input required type="radio" value="SALE" name="saleOrRent" id="saleRadio"/>
                     <FormCheck.Label>SALE</FormCheck.Label>

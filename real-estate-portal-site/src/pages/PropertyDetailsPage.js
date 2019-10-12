@@ -7,10 +7,9 @@ import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import ActionHeader from "../components/ActionHeader";
 
-const PropertyDetailsPage = ({match}) => {
-    const {
-        params: {propertyId},
-    } = match
+const PropertyDetailsPage = (props) => {
+    
+    const propertyId = props.match.params.propertyId;
 
     const [property, setProperty] = useState(null)
     const [loading, setLoading] = useState(false)

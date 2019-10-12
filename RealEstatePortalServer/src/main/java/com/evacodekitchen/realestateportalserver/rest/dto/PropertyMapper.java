@@ -17,9 +17,6 @@ public interface PropertyMapper {
 	
 	Property newPropertyDTOToProperty(NewPropertyDTO newPropertyDTO);
 
-	default SaleOrRent stringToSaleOrRent(String saleOrRent) {
-		return SaleOrRent.fromString(saleOrRent);
-	}
 	
 	default byte[] mutipartFileToByteArray(MultipartFile value) {
 		try {

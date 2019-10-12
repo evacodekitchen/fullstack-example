@@ -35,12 +35,12 @@ const ActionHeader = ({searchEnabled}) => {
                 <Nav className="mr-auto">
                     <Nav.Link as={Link} to={"/properties"}>Home</Nav.Link>
                 </Nav>
-                {searchEnabled && <Form inline onSubmit={(event) => updateSearchedCityInContext(event)}>
+                {searchEnabled && <Form className="mt-1" inline onSubmit={(event) => updateSearchedCityInContext(event)}>
                     <FormControl onChange={(event) => updateTypedSearchedCity(event.target.value)} type="text"
                                  placeholder="Search in city" className="mr-sm-2"/>
                 </Form>}
                 <Link to={"/properties/new"}>
-                    <Button variant="warning" className="ml-md-4">Add new property</Button></Link>
+                    <Button variant="warning" className="ml-md-4 mt-1">Add new property</Button></Link>
             </Navbar.Collapse></Container>
     </Navbar>
 };
